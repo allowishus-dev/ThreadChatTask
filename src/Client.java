@@ -14,25 +14,31 @@ import javax.swing.JFrame;
  * Trivial client for the date server.
  */
 public class Client extends JFrame {
-
-    
-    
-	public Client() throws IOException
-	{
+	private Socket s = null;
+	private String answer = null;
+	private DataOutputStream dos;
+	private BufferedReader input;
+        
+	public Client() throws IOException {
 		JButton btn = new JButton("run");
 		btn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				Socket s =null;
-				String answer = null;
+				
+				if (s == null) {
+					try {
+						s = new Socket("localhost", 9090);
+					}
+					catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
 				
 				try {
-					s = new Socket("localhost", 9090);
-					
-					DataOutputStream dos = new DataOutputStream(s.getOutputStream());
+					dos = new DataOutputStream(s.getOutputStream());
 					dos.writeUTF("Hej server.");
 					dos.flush();
 					
-					BufferedReader input = new BufferedReader(new InputStreamReader(s.getInputStream()));
+					input = new BufferedReader(new InputStreamReader(s.getInputStream()));
 					answer = input.readLine();
 					
 				} catch (Exception e1) {

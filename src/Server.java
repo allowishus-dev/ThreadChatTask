@@ -1,37 +1,28 @@
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.net.ServerSocket;
-import java.net.Socket;
 import java.util.ArrayList;
-import java.util.Date;
-
-import javax.swing.JButton;
-import javax.swing.JFrame;
 
 public class Server{
+	ArrayList<Thread> incomingClientThreads = new ArrayList<Thread>();
+	int i=0;
 	
 	public Server() throws IOException
 	{
-        ServerSocket listener = new ServerSocket(9090);
-        ArrayList<Thread> serverThreads = new ArrayList<Thread>();
-        int i = 0;
+		ServerSocket serverSocket = serverSocket = new ServerSocket(9090); // en ny server instantieres på port 9090
+		
         
         try {
-            while (true) {
-                serverThreads.add(new ServerThread(listener.accept(), i));
-                // original kode klippet over i serverThread                
-    	        
-    	        i++;
-            }
+        	while(true) {
+        		i = incomingClientThreads.size();
+        		incomingClientThreads.add(new ServerThread(serverSocket.accept(), i));
+        		serverSocket.close();
+        	}
         }
         finally {
-            listener.close();
+        	serverSocket.close();           	
         }
-		
+
+	
 	}
 	
     /**
