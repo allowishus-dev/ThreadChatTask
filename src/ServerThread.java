@@ -4,12 +4,21 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
 
-public class ServerThread extends Thread {
+public class ServerThread implements Runnable {
+	Socket socket = new Socket();
+	int i=0;
 	DataInputStream in;
 	DataOutputStream out;
 	
 	public ServerThread (Socket socket, int i) {
 		System.out.println("Jeg bliver ikke skrevet ud før en klient forbinder til serveren.");
+		this.socket = socket;
+		this.i = i;
+		
+	}
+
+	@Override
+	public void run() {
 		int messageNumber=0;
 	    
 	    while(true) {

@@ -9,13 +9,13 @@ public class Server{
 	public Server() throws IOException
 	{
 		ServerSocket serverSocket = serverSocket = new ServerSocket(9090); // en ny server instantieres på port 9090
-		
         
         try {
         	while(true) {
         		i = incomingClientThreads.size();
-        		incomingClientThreads.add(new ServerThread(serverSocket.accept(), i));
-        		serverSocket.close();
+        		Thread t = new Thread(new ServerThread(serverSocket.accept(), i));
+        		incomingClientThreads.add(t);
+        		t.start();        		
         	}
         }
         finally {
