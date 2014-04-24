@@ -1,3 +1,5 @@
+import java.awt.FlowLayout;
+import java.awt.Panel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
@@ -9,6 +11,9 @@ import java.net.UnknownHostException;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 
 /**
  * Trivial client for the date server.
@@ -18,9 +23,11 @@ public class Client extends JFrame {
 	private String answer = null;
 	private DataOutputStream dos;
 	private BufferedReader input;
+	private JTextField message = new JTextField(10);
         
 	public Client() throws IOException {
-		JButton btn = new JButton("run");
+		
+		JButton btn = new JButton("Send message");
 		btn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				
@@ -35,7 +42,7 @@ public class Client extends JFrame {
 				
 				try {
 					dos = new DataOutputStream(s.getOutputStream());
-					dos.writeUTF("Hej server.");
+					dos.writeUTF(message.getText());
 					dos.flush();
 					
 					input = new BufferedReader(new InputStreamReader(s.getInputStream()));
@@ -44,13 +51,20 @@ public class Client extends JFrame {
 				} catch (Exception e1) {
 					e1.printStackTrace();
 				}
-		        System.out.println(answer);		
+				
+				// returnerer et svar
+				new JOptionPane().showMessageDialog(null, answer);
+				System.out.println(answer);
+				message.setText("");
 			}
 		});
+		add(new JLabel("Enter a message"));
+		add(message);
 		add(btn);
-		setVisible(true);
-        pack();
-		
+		setLayout(new FlowLayout());
+		setTitle("Client");
+		setSize(250,100);		
+		setVisible(true);		
 	}
 	
     public static void main(String[] args) throws IOException {

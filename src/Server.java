@@ -3,8 +3,8 @@ import java.net.ServerSocket;
 import java.util.ArrayList;
 
 public class Server{
-	ArrayList<Thread> incomingClientThreads = new ArrayList<Thread>();
-	int i=0;
+	private ArrayList<Thread> incomingClientThreads = new ArrayList<Thread>();
+	private int i=0;
 	
 	public Server() throws IOException
 	{
@@ -25,9 +25,6 @@ public class Server{
 	
 	}
 	
-    /**
-     * Runs the server.
-     */
     public static void main(String[] args) throws IOException {
     	new Server();
     }

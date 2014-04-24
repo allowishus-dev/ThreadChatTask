@@ -5,21 +5,19 @@ import java.io.PrintWriter;
 import java.net.Socket;
 
 public class ServerThread implements Runnable {
-	Socket socket = new Socket();
-	int i=0;
-	DataInputStream in;
-	DataOutputStream out;
+	private Socket socket = new Socket();
+	private int i=0;
+	private DataInputStream in;
+	private DataOutputStream out;
 	
 	public ServerThread (Socket socket, int i) {
-		System.out.println("Jeg bliver ikke skrevet ud før en klient forbinder til serveren.");
 		this.socket = socket;
 		this.i = i;
-		
 	}
 
 	@Override
 	public void run() {
-		int messageNumber=0;
+		int messageNumber=1;
 	    
 	    while(true) {
 	    	try {
@@ -33,9 +31,9 @@ public class ServerThread implements Runnable {
 		    	String message = in.readUTF(); //læs fra client
 				
 				PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-				out.println("Client threads on server: " + i + " - Message no: " + messageNumber + ". You said: " + message);	        
+				out.println("Client thread on server: " + i + " - Message no: " + messageNumber + ". You said: " + message);	        
 		    }
-		    catch(Exception e) { //ignores exceptions
+		    catch(Exception e) {
 		    	e.printStackTrace();
 		    }
 		    messageNumber++;
